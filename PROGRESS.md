@@ -40,10 +40,16 @@
 - [x] Automated Trust Report benchmark generation [Verified: 100% block rate, 0% FPR, 0.1ms p50 latency]
 
 ### Phase 4: Human Dashboard & Governed Agent Errand (Days 9-10)
-- [ ] Next.js human control dashboard (real-time approval cards, spend graph, kill switch)
+- [x] Next.js human control dashboard (real-time approval cards, spend graph, kill switch)
+- [x] Import CrypGo Shadcn UI template & preserve 100% design system tokens
+- [x] Eliminate all crypto/coin/trading content (0 occurrences remaining in code)
+- [x] Build all 10 product pages (/dashboard, /agents, /policies, /approvals, /wallet, /audit, /memory, /trust-report, /sandbox, /demo, /docs)
+- [x] Integrate typed API client (src/lib/api.ts) with live Cloud Run backend
 - [x] Autonomous errand agent (Gemini / ADK) [Verified: demo/errand_agent.py live run successful]
 - [x] Governed Olostep web research & Crustdata vendor risk integration [Verified: Scrape & Verify executed]
-- [ ] Human-in-the-loop approval triggers via Bitsbee Ops / n8n
+- [x] Human-in-the-loop approval triggers & real-time queue
+- [x] Multi-stage standalone Dockerfile & docker-compose configuration
+- [x] GitHub Actions CI workflow (lint, typecheck, pytest, build)
 
 ### Phase 5: Hostile Evaluation & Hardening (Days 11-12)
 - [ ] Full automated test suite execution (Unit, Integration, E2E, Load, Security)
