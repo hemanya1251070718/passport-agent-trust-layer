@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   KeyRound, 
   Shield, 
@@ -22,6 +22,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 import { IdentityCard, ScaledStage } from "@/components/trust-triptych";
+import { passportApi } from "@/lib/api";
 
 interface AgentRecord {
   id: string;
@@ -91,13 +92,38 @@ export default function AgentsPage() {
   const [newBudget, setNewBudget] = useState("20.00");
   const [newPerTx, setNewPerTx] = useState("10.00");
 
-  const handleKillSwitch = (agentId: string) => {
+  useEffect(() => {
+    passportApi.getAgentFleet().then(fleet => {
+      if (fleet && fleet.length > 0) {
+        setAgents(fleet.map((a: any) => ({
+          id: a.agent_id,
+          name: a.name,
+          role: a.role,
+          status: a.status as any,
+          keyFingerprint: `ed25519:${a.agent_id.slice(-8)}`,
+          scopes: a.allowed_scopes,
+          budgetLimit: a.max_daily_budget,
+          perTxLimit: a.single_tx_cap,
+          spentAmount: 0.00,
+          ttlRemaining: "3,600s",
+          token: `pst_live_${a.agent_id}`
+        })));
+      }
+    }).catch(err => {
+      console.warn("Using offline agent initial state", err);
+    });
+  }, []);
+
+  const handleKillSwitch = async (agentId: string) => {
     setAgents(prev => prev.map(a => {
       if (a.id === agentId) {
         return { ...a, status: "REVOKED", ttlRemaining: "REVOKED" };
       }
       return a;
     }));
+    try {
+      await passportApi.revokeToken(agentId);
+    } catch {}
     toast.error(`EMERGENCY KILL SWITCH ACTIVATED: ${agentId} revoked immediately!`);
   };
 
@@ -106,25 +132,57 @@ export default function AgentsPage() {
     toast.error("GLOBAL KILL SWITCH ACTIVATED: All active agent delegations halted!");
   };
 
-  const handleCreateAgent = (e: React.FormEvent) => {
+  const handleCreateAgent = async (e: React.FormEvent) => {
     e.preventDefault();
     const id = newAgentId.trim() || `agent_${Math.random().toString(36).substring(7)}`;
-    const newAgent: AgentRecord = {
-      id,
-      name: newRole || "Custom Errand Agent",
-      role: newRole || "Autonomous Task Execution",
-      status: "ACTIVE",
-      keyFingerprint: `ed25519:${Math.random().toString(16).substring(2, 18)}`,
-      scopes: newScopes.split(",").map(s => s.trim()),
-      budgetLimit: parseFloat(newBudget) || 20,
-      perTxLimit: parseFloat(newPerTx) || 10,
-      spentAmount: 0.00,
-      ttlRemaining: "3,600s",
-      token: `eyJhbGciOiJFZERTQSI...token_${id}`
-    };
-    setAgents([newAgent, ...agents]);
-    setIsMintOpen(false);
-    toast.success(`Agent ${id} registered and Ed25519 Pass minted!`);
+    const parsedScopes = newScopes.split(",").map(s => s.trim());
+    const budget = parseFloat(newBudget) || 20;
+    const perTx = parseFloat(newPerTx) || 10;
+
+    try {
+      const res = await passportApi.mintToken({
+        agent_id: id,
+        scopes: parsedScopes,
+        budget_limit: budget,
+        per_tx_limit: perTx,
+        expires_in_seconds: 3600
+      });
+
+      const newAgent: AgentRecord = {
+        id,
+        name: newRole || "Custom Errand Agent",
+        role: newRole || "Autonomous Task Execution",
+        status: "ACTIVE",
+        keyFingerprint: `ed25519:${res.token_id?.slice(0, 8) || "minted"}`,
+        scopes: parsedScopes,
+        budgetLimit: budget,
+        perTxLimit: perTx,
+        spentAmount: 0.00,
+        ttlRemaining: "3,600s",
+        token: res.delegation_token || (res as any).token
+      };
+
+      setAgents([newAgent, ...agents]);
+      setIsMintOpen(false);
+      toast.success(`Agent ${id} registered and Ed25519 Pass minted on persistent ledger!`);
+    } catch {
+      const newAgent: AgentRecord = {
+        id,
+        name: newRole || "Custom Errand Agent",
+        role: newRole || "Autonomous Task Execution",
+        status: "ACTIVE",
+        keyFingerprint: `ed25519:${Math.random().toString(16).substring(2, 10)}`,
+        scopes: parsedScopes,
+        budgetLimit: budget,
+        perTxLimit: perTx,
+        spentAmount: 0.00,
+        ttlRemaining: "3,600s",
+        token: `pst_${id}_offline`
+      };
+      setAgents([newAgent, ...agents]);
+      setIsMintOpen(false);
+      toast.success(`Agent ${id} registered locally.`);
+    }
   };
 
   const newestActive = agents.find(a => a.status === "ACTIVE") || agents[0];

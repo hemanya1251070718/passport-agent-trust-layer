@@ -40,6 +40,44 @@ export interface ToolEvaluationResponse {
   ticket_id?: string;
 }
 
+export interface SubDelegationMintRequest {
+  parent_token: string;
+  sub_agent_id: string;
+  scopes: string[];
+  budget_limit?: number;
+  per_tx_limit?: number;
+  allowed_merchants?: string[];
+  expires_in_seconds?: number;
+}
+
+export interface AgentProfile {
+  agent_id: string;
+  name: string;
+  role: string;
+  principal_id: string;
+  max_daily_budget: number;
+  single_tx_cap: number;
+  allowed_scopes: string[];
+  status: string;
+  created_at: string;
+}
+
+export interface DelegationRecord {
+  jti: string;
+  parent_jti?: string | null;
+  principal_id: string;
+  agent_id: string;
+  token_prefix: string;
+  scopes: string[];
+  budget_limit: number;
+  per_tx_limit: number;
+  iat: number;
+  exp: number;
+  is_revoked: boolean;
+  revoked_reason?: string;
+  created_at: string;
+}
+
 export interface SpendRequest {
   agent_id: string;
   amount: number;
@@ -181,6 +219,40 @@ class PassportApiClient {
         notes: reason,
       }),
     });
+  }
+
+  // Sub-Delegation Chains (Day 3 Flagship)
+  async mintSubDelegation(data: SubDelegationMintRequest): Promise<TokenMintResponse> {
+    return this.request<TokenMintResponse>("/auth/sub-delegate", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getDelegations(): Promise<DelegationRecord[]> {
+    return this.request<DelegationRecord[]>("/auth/delegations");
+  }
+
+  // Agent Fleet Registry
+  async getAgentFleet(): Promise<AgentProfile[]> {
+    return this.request<AgentProfile[]>("/agents/list");
+  }
+
+  async registerAgent(data: Partial<AgentProfile>): Promise<AgentProfile> {
+    return this.request<AgentProfile>("/agents/register", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  // Wallet Transactions
+  async getWalletTransactions(): Promise<any[]> {
+    return this.request<any[]>("/wallet/transactions");
+  }
+
+  // SSE Real-time Stream URL
+  getAuditStreamUrl(): string {
+    return `${this.baseUrl}/audit/stream`;
   }
 
   // Run Demo Errand

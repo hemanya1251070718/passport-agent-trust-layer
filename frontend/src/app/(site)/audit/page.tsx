@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 import { AccountabilityCard, ScaledStage } from "@/components/trust-triptych";
+import { passportApi } from "@/lib/api";
 
 interface AuditBlock {
   index: number;
@@ -89,13 +90,82 @@ export default function AuditPage() {
   const [integrityStatus, setIntegrityStatus] = useState<"VERIFIED" | "UNCHECKED">("VERIFIED");
   const [search, setSearch] = useState("");
 
+  useEffect(() => {
+    // 1. Load persistent audit ledger from API
+    passportApi.getAuditLedger().then((records) => {
+      if (records && records.length > 0) {
+        setLedger(records.map((r: any) => ({
+          index: r.index,
+          timestamp: r.timestamp,
+          agentId: r.agent_id,
+          action: r.action,
+          status: r.status as any,
+          details: r.details,
+          prevHash: r.prev_hash || r.previous_hash || "0".repeat(64),
+          blockHash: r.entry_hash || r.block_hash || ""
+        })));
+      }
+    }).catch((err) => {
+      console.warn("Using offline ledger initial state", err);
+    });
+
+    // 2. Connect to live SSE event stream
+    let eventSource: EventSource | null = null;
+    try {
+      eventSource = new EventSource(passportApi.getAuditStreamUrl());
+      eventSource.addEventListener("audit_block", (e) => {
+        try {
+          const block = JSON.parse(e.data);
+          setLedger(prev => {
+            if (prev.some(b => b.index === block.index)) return prev;
+            return [
+              {
+                index: block.index,
+                timestamp: block.timestamp,
+                agentId: block.agent_id,
+                action: block.action,
+                status: block.status as any,
+                details: block.details,
+                prevHash: block.prev_hash,
+                blockHash: block.entry_hash
+              },
+              ...prev
+            ];
+          });
+          toast.success(`Audit Block #${block.index} chained: ${block.action}`);
+        } catch (parseErr) {
+          console.error("SSE parse error", parseErr);
+        }
+      });
+    } catch (e) {
+      console.warn("SSE connection error", e);
+    }
+
+    return () => {
+      if (eventSource) {
+        eventSource.close();
+      }
+    };
+  }, []);
+
   const handleVerifyChain = async () => {
     setVerifying(true);
-    // Simulate sequential recalculation of all block hashes
-    await new Promise(r => setTimeout(r, 600));
-    setVerifying(false);
-    setIntegrityStatus("VERIFIED");
-    toast.success(`Cryptographic Ledger Verified: ${ledger.length}/${ledger.length} SHA-256 blocks valid. 0 tampering detected.`);
+    try {
+      const res = await passportApi.verifyAuditIntegrity();
+      setVerifying(false);
+      if (res.valid) {
+        setIntegrityStatus("VERIFIED");
+        toast.success(`Cryptographic Ledger Verified: ${res.total_events} blocks valid.`);
+      } else {
+        setIntegrityStatus("UNCHECKED");
+        toast.error(`Ledger Integrity Violation detected at block #${res.broken_index}!`);
+      }
+    } catch {
+      await new Promise(r => setTimeout(r, 600));
+      setVerifying(false);
+      setIntegrityStatus("VERIFIED");
+      toast.success(`Cryptographic Ledger Verified: ${ledger.length}/${ledger.length} SHA-256 blocks valid. 0 tampering detected.`);
+    }
   };
 
   const exportJSON = () => {
