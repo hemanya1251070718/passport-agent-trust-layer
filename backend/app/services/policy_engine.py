@@ -115,10 +115,26 @@ class PolicyEngine:
                 )
 
             # 2. Scope Mapping & Verification
+            # Compliance Rule: Block real people's personal data queries
+            if req.tool_name in ["crustdata_people_search", "people_search", "person_enrich"]:
+                self.audit.record_event(
+                    agent_id=req.agent_id,
+                    action=f"COMPLIANCE_INTERDICTION_{req.tool_name}",
+                    status="DENIED",
+                    details={"reason": "Hackathon Compliance Violation: Personal data queries strictly banned"}
+                )
+                return ToolEvaluationResponse(
+                    decision="DENY",
+                    reason="Compliance Interdiction: Hackathon rules strictly forbid querying individual personal data. Only company-level firmographics permitted.",
+                    risk_score=1.0
+                )
+
             TOOL_SCOPE_MAP = {
                 "olostep_scrape": "web:scrape",
                 "olostep_search": "web:search",
                 "crustdata_verify": "vendor:verify",
+                "crustdata_enrich_company": "vendor:verify",
+                "crustdata_search_company": "vendor:verify",
                 "wallet_spend": "wallet:pay",
                 "claim_file": "claims:write",
                 "vendor_research": "web:search"
