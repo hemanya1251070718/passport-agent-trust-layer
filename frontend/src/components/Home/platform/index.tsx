@@ -23,13 +23,11 @@ const Platform = () => {
           <div className="lg:col-span-4 col-span-12">
             <div className="flex lg:justify-end lg:mt-0 mt-7 justify-start gap-4">
               <Button
-                asChild
+                render={<Link href="/documentation" />}
                 className="flex items-center gap-2 text-black bg-primary hover:bg-primary/90 py-6 px-6 rounded-lg text-base font-semibold h-12"
               >
-                <Link href="/documentation">
-                  Developer Docs
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                Developer Docs
+                <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
           </div>

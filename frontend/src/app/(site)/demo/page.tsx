@@ -236,8 +236,8 @@ export default function DemoPage() {
               All 5 security gates passed with zero human intervention required. 100% cryptographic non-repudiation established.
             </p>
             <div className="flex justify-center gap-3">
-              <Button asChild size="sm" className="bg-primary text-black font-semibold text-xs h-9">
-                <a href="/audit">Inspect in Flight Recorder →</a>
+              <Button render={<Link href="/audit" />} size="sm" className="bg-primary text-black font-semibold text-xs h-9">
+                Inspect in Flight Recorder →
               </Button>
             </div>
           </Card>

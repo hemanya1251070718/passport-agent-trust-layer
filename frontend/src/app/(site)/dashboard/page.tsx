@@ -95,10 +95,8 @@ export default function DashboardPage() {
               <span className="text-white/80 font-mono">Gateway: {liveStatus}</span>
             </div>
 
-            <Button asChild size="sm" className="bg-primary text-black font-semibold hover:bg-primary/90 text-xs h-9">
-              <Link href="/demo">
-                <Play className="w-3.5 h-3.5 mr-1" /> Run Live Errand
-              </Link>
+            <Button render={<Link href="/demo" />} size="sm" className="bg-primary text-black font-semibold hover:bg-primary/90 text-xs h-9 flex items-center gap-1.5">
+              <Play className="w-3.5 h-3.5 mr-1" /> Run Live Errand
             </Button>
           </div>
         </div>
@@ -149,8 +147,8 @@ export default function DashboardPage() {
                   <Activity className="w-5 h-5 text-primary" />
                   <h3 className="font-bold text-white text-lg">Live Interception & Audit Stream</h3>
                 </div>
-                <Button asChild variant="ghost" size="sm" className="text-xs text-primary hover:text-primary">
-                  <Link href="/audit">View Full Ledger →</Link>
+                <Button render={<Link href="/audit" />} variant="ghost" size="sm" className="text-xs text-primary hover:text-primary">
+                  View Full Ledger →
                 </Button>
               </div>
 
@@ -253,8 +251,8 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <Button asChild variant="outline" size="sm" className="w-full text-xs border-white/20 bg-white/5 hover:bg-white/10">
-                <Link href="/agents">Manage All Agents</Link>
+              <Button render={<Link href="/agents" />} variant="outline" size="sm" className="w-full text-xs border-white/20 bg-white/5 hover:bg-white/10">
+                Manage All Agents
               </Button>
             </Card>
 
@@ -291,8 +289,8 @@ export default function DashboardPage() {
               <p className="text-xs text-white/70 mb-4">
                 Automated 60-scenario adversarial evaluation suite executed against the live gateway.
               </p>
-              <Button asChild size="sm" className="w-full bg-primary text-black font-semibold hover:bg-primary/90 text-xs">
-                <Link href="/trust-report">View Full Trust Report</Link>
+              <Button render={<Link href="/trust-report" />} size="sm" className="w-full bg-primary text-black font-semibold hover:bg-primary/90 text-xs">
+                View Full Trust Report
               </Button>
             </Card>
           </div>

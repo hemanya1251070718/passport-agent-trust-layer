@@ -67,23 +67,19 @@ const Hero = () => {
 
             <div className="flex flex-wrap items-center md:justify-start justify-center gap-4">
               <Button
-                asChild
+                render={<Link href="/dashboard" />}
                 className="text-base bg-primary hover:bg-primary/90 text-black font-semibold py-6 px-7 rounded-lg h-12 flex items-center gap-2"
               >
-                <Link href="/dashboard">
-                  Open Dashboard
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                Open Dashboard
+                <ArrowRight className="w-4 h-4" />
               </Button>
 
               <Button
-                asChild
+                render={<Link href="/demo" />}
                 variant="outline"
                 className="text-base border border-white/20 bg-white/5 hover:bg-white/10 text-white font-medium py-6 px-6 rounded-lg h-12"
               >
-                <Link href="/demo">
-                  Deterministic Demo
-                </Link>
+                Deterministic Demo
               </Button>
 
               <Button
