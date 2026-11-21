@@ -13,18 +13,19 @@
 ## Phase Checklist
 
 ### Phase 0: Intake & Environment Setup
-- [x] Create public GitHub repository with origin tracking
-- [x] Configure git user attribution (Hemanya Devendra Gillurkar)
+- [x] Create public GitHub repository with origin tracking (https://github.com/hemanya1251070718/passport-agent-trust-layer)
+- [x] Configure git user attribution (Hemanya Devendra Gillurkar <hemanya.1251070718@vit.edu>)
 - [x] Initial commit: `.gitignore`, `.env.example`, `LICENSE`, `README.md`, `.gitleaks.toml`, CI workflow
-- [ ] Receive Google Cloud Project ID, region, budget cap, and enabled APIs
-- [ ] Receive Partner credentials and verify webhook integrations
-- [ ] Verify local Python 3.11+ / Node.js development toolchains
+- [x] Receive Google Cloud Project ID, region, budget cap, and enabled APIs (`project-c678e6e8-2896-441b-a53`, `asia-south1`, $25 cap)
+- [x] Receive Partner credentials and verify webhook integrations (Olostep `team_JZM185XV9cMY`, Crustdata `cd_1...a323`, Bitsbee Ops)
+- [x] Verify local Python 3.11+ / Node.js development toolchains (Python 3.13, Node 25, Pytest, Uvicorn)
 
 ### Phase 1: Architecture & Threat Modeling (Days 1-2)
-- [ ] Define cryptographic delegation token specification (RFC 7519 / Ed25519)
-- [ ] Detail default-deny policy schema & risk scoring rules
-- [ ] Design SHA-256 hash-chained audit log data model
-- [ ] Deploy initial Cloud Run service skeleton and health probes
+- [x] Research hackathon rules and partner documentation (Olostep, Crustdata MCP, Bitsbee, Keploy)
+- [x] Define cryptographic delegation token specification (RFC 7519 / Ed25519) (`ARCHITECTURE.md`, `DATA_MODEL.md`)
+- [x] Detail default-deny policy schema & risk scoring rules (`THREAT_MODEL.md`, `DATA_MODEL.md`)
+- [x] Design SHA-256 hash-chained audit log data model (`DATA_MODEL.md`, `backend/app/core/audit.py`)
+- [x] Deploy initial Cloud Run service skeleton and health probes (`Dockerfile`, `deploy_gcp.ps1`, `/health`, `/api/v1/auth/jwks`) [Verified: 17/17 Pytest passing]
 
 ### Phase 2: Core Trust Engine (Days 3-5)
 - [x] Token minting & verification service (FastAPI) [Verified: 14/14 Pytest passing]
