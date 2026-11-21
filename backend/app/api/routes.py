@@ -166,3 +166,11 @@ async def governed_vendor_verify(domain: str, agent_id: str = "demo-agent"):
         details={"domain": domain, "risk_score": result.get("risk_score")}
     )
     return result
+
+# --- LIVE ERRAND DEMO TRIGGER ---
+@router.post("/demo/run-errand")
+async def run_flagship_errand():
+    from demo.errand_agent import AutonomousErrandRunner
+    runner = AutonomousErrandRunner()
+    result = await runner.run_errand()
+    return result
