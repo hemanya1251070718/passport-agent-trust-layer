@@ -13,3 +13,8 @@
 - **Context**: Post-incident forensic audit requires proof that audit records have not been altered or deleted by a compromised agent or insider.
 - **Decision**: Structure audit log entries as a cryptographic hash chain: `hash_n = SHA256(hash_{n-1} + timestamp + event_payload)`.
 - **Rationale**: Provides tamper-evident verification with minimal computational overhead.
+
+## ADR 004: Frontend Base Template (CrypGo Shadcn UI)
+- **Context**: The frontend dashboard and public landing page require an enterprise-grade glassmorphic cyber-security aesthetic with full responsiveness, dark/light themes, and Shadcn UI components.
+- **Decision**: Import and customize the Crypgo template by ShadcnSpace (MIT License, commit `e4c1e4e9065894aeecd5e4cb2fb3f074ca76e91a` from `https://github.com/shadcnspace/crypgo-shadcn-ui-landingpage.git`).
+- **Rationale**: Built on Next.js, React 19, Tailwind CSS v4, and Shadcn UI. All crypto/bitcoin placeholder content is replaced with Passport's agent trust, policy, and audit interfaces while strictly preserving design tokens and component styling. License preserved at `/frontend/LICENSE-crypgo`.

@@ -143,3 +143,5 @@ result = await guard.execute_tool(
 - **Zero Real Personal Data**: Uses exclusively synthetic, simulated data.
 - **Zero Secrets Committed**: Verified via Gitleaks pre-commit & GitHub Actions CI.
 - **License**: [Apache 2.0](file:///d:/VIT%20PUNE/HACKATHONS/homingo/LICENSE).
+
+- **Frontend Template Credits**: Landing page UI derived from the [Crypgo Next.js Template](https://github.com/shadcnspace/crypgo-shadcn-ui-landingpage.git) by ShadcnSpace / Wrappixel (MIT License, commit `e4c1e4e9065894aeecd5e4cb2fb3f074ca76e91a`). Full license copy preserved at `frontend/LICENSE-crypgo`.

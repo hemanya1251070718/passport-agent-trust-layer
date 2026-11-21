@@ -1,21 +1,32 @@
-import type { Metadata } from "next";
-import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "Passport | The Trust & Control Layer for AI Agents",
-  description: "Okta + Stripe Limits + Tamper-Evident Flight Recorder for Autonomous AI Agents. Built for Homingo Hack Days Edition 01.",
-};
+import { DM_Sans } from 'next/font/google'
+import './globals.css'
+import Header from '@/components/Layout/Header'
+import Footer from '@/components/Layout/Footer'
+import { ThemeProvider } from 'next-themes'
+import ScrollToTop from '@/components/ScrollToTop'
+import Aoscompo from '@/utils/aos'
+const font = DM_Sans({ subsets: ['latin'] })
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-[#030712] text-zinc-100 antialiased selection:bg-cyan-500/20 selection:text-cyan-300">
-        {children}
+    <html lang='en' suppressHydrationWarning>
+      <body className={`${font.className}`}>
+        <ThemeProvider
+          attribute='class'
+          enableSystem={true}
+          defaultTheme='system'>
+          <Aoscompo>
+            <Header />
+            {children}
+            <Footer />
+          </Aoscompo>
+          <ScrollToTop />
+        </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }
