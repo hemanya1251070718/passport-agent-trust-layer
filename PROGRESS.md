@@ -27,10 +27,10 @@
 - [ ] Deploy initial Cloud Run service skeleton and health probes
 
 ### Phase 2: Core Trust Engine (Days 3-5)
-- [ ] Token minting & verification service (FastAPI)
-- [ ] Policy engine with scope matching & dynamic approval gates
-- [ ] Sandboxed financial ledger with per-agent budget limits
-- [ ] Hash-chained audit event emitter with verification endpoint
+- [x] Token minting & verification service (FastAPI) [Verified: 14/14 Pytest passing]
+- [x] Policy engine with scope matching & dynamic approval gates [Verified: 14/14 Pytest passing]
+- [x] Sandboxed financial ledger with per-agent budget limits [Verified: 14/14 Pytest passing]
+- [x] Hash-chained audit event emitter with verification endpoint [Verified: 14/14 Pytest passing]
 
 ### Phase 3: SDK, MCP & Adversarial Red-Team (Days 6-8)
 - [ ] Python SDK (`passport-agent`) with 5-line integration
