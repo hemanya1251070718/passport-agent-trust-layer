@@ -3,8 +3,7 @@ import Breadcrumb from "@/components/Common/Breadcrumb";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title:
-    "Sign Up | Property",
+  title: "Sign Up | Passport Agent Trust Layer",
 };
 
 const SignupPage = () => {

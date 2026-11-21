@@ -1,5 +1,4 @@
 "use client";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -9,41 +8,30 @@ import Logo from "@/components/Layout/Header/Logo";
 import Loader from "@/components/Common/Loader";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth-context";
 
 const Signin = () => {
   const router = useRouter();
+  const { signIn } = useAuth();
 
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
-    checkboxToggle: false,
   });
   const [loading, setLoading] = useState(false);
 
-  const loginUser = (e: any) => {
+  const loginUser = async (e: any) => {
     e.preventDefault();
-
+    if (!loginData.email) {
+      toast.error("Please enter your email");
+      return;
+    }
     setLoading(true);
-    signIn("credentials", { ...loginData, redirect: false })
-      .then((callback) => {
-        if (callback?.error) {
-          toast.error(callback?.error);
-          console.log(callback?.error);
-          setLoading(false);
-          return;
-        }
-
-        if (callback?.ok && !callback?.error) {
-          toast.success("Login successful");
-          setLoading(false);
-          router.push("/");
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err.message);
-        toast.error(err.message);
-      });
+    const ok = await signIn(loginData.email, loginData.password);
+    setLoading(false);
+    if (ok) {
+      router.push("/dashboard");
+    }
   };
 
   return (

@@ -8,36 +8,26 @@ import { useState } from "react";
 import Loader from "@/components/Common/Loader";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth-context";
 
 const SignUp = () => {
   const router = useRouter();
+  const { signIn } = useAuth();
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-
     setLoading(true);
     const data = new FormData(e.currentTarget);
-    const value = Object.fromEntries(data.entries());
-    const finalData = { ...value };
+    const email = String(data.get("email") || "");
+    const password = String(data.get("password") || "");
 
-    fetch("/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(finalData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        toast.success("Successfully registered");
-        setLoading(false);
-        router.push("/signin");
-      })
-      .catch((err) => {
-        toast.error(err.message);
-        setLoading(false);
-      });
+    const ok = await signIn(email, password);
+    setLoading(false);
+    if (ok) {
+      toast.success("Account created successfully");
+      router.push("/dashboard");
+    }
   };
 
   return (
