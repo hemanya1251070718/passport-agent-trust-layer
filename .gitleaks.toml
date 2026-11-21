@@ -1,0 +1,11 @@
+title = "Passport Gitleaks Configuration"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Global allowlist for documentation and templates"
+paths = [
+    '''\.env\.example$''',
+    '''README\.md$''',
+]
