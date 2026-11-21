@@ -115,67 +115,22 @@ const Hero = () => {
             </div>
           </motion.div>
 
-          <motion.div {...rightAnimation} className="w-full">
-            {/* Interactive Holographic Agent Pass Card */}
-            <div className="w-full max-w-lg mx-auto bg-gradient-to-br from-white/10 via-white/5 to-transparent border border-white/15 rounded-2xl p-6 backdrop-blur-xl shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-36 h-36 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
-
-              {/* Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-white/10">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-primary/20 rounded-xl border border-primary/30">
-                    <Shield className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-white text-lg">Passport Agent Pass</h3>
-                    <p className="text-xs text-white/60 font-mono">ID: agent_errand_01</p>
-                  </div>
-                </div>
-                <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3" /> ACTIVE & ENFORCING
-                </Badge>
-              </div>
-
-              {/* Identity & Scope Grid */}
-              <div className="grid grid-cols-2 gap-4 py-4 border-b border-white/10 text-xs font-mono">
-                <div>
-                  <span className="text-white/40 block">Principal</span>
-                  <span className="text-white/90">hemanya1251070718</span>
-                </div>
-                <div>
-                  <span className="text-white/40 block">Delegation Key</span>
-                  <span className="text-primary truncate block">ed25519:7f8a9b2c...4d</span>
-                </div>
-                <div>
-                  <span className="text-white/40 block">Per-Tx Spend Cap</span>
-                  <span className="text-white/90">$15.00 USD</span>
-                </div>
-                <div>
-                  <span className="text-white/40 block">24h Velocity Cap</span>
-                  <span className="text-white/90">$50.00 USD ($41.50 remaining)</span>
-                </div>
-              </div>
-
-              {/* Authorized Scopes */}
-              <div className="py-3 border-b border-white/10">
-                <span className="text-xs text-white/40 block mb-2 font-mono">Authorized Capability Scopes</span>
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-primary/15 text-primary border border-primary/25">olostep:scrape</span>
-                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-primary/15 text-primary border border-primary/25">crustdata:enrich</span>
-                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-primary/15 text-primary border border-primary/25">wallet:spend</span>
-                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-red-500/10 text-red-400 line-through border border-red-500/20">system:exec</span>
-                </div>
-              </div>
-
-              {/* Intercepted Threats Preview */}
-              <div className="pt-4 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-amber-400" />
-                  <span className="text-white/80">Hostile Vectors Intercepted:</span>
-                </div>
-                <span className="font-mono font-bold text-primary">49 / 49 (100%)</span>
-              </div>
-            </div>
+          <motion.div {...rightAnimation} className="w-full flex justify-center items-center">
+            <motion.div
+              animate={{ y: [0, -14, 0] }}
+              transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
+              className="w-full max-w-[540px] relative"
+            >
+              <div className="absolute -inset-4 bg-primary/20 rounded-full blur-3xl pointer-events-none opacity-60"></div>
+              <Image
+                src="/images/hero/hero-banner-img.png"
+                alt="Passport Agent Trust Mobile Interface"
+                width={584}
+                height={582}
+                priority
+                className="w-full h-auto object-contain relative z-10 drop-shadow-[0_25px_60px_rgba(56,189,248,0.3)]"
+              />
+            </motion.div>
           </motion.div>
         </div>
 
