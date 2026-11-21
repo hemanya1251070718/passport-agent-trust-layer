@@ -11,6 +11,7 @@ RUN pnpm install
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ENV NEXT_PUBLIC_API_URL="https://passport-trust-gateway-58223756937.asia-south1.run.app/api/v1"
 RUN pnpm build
 
 FROM node:20-alpine AS runner
