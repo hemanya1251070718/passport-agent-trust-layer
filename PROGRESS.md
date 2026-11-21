@@ -40,8 +40,8 @@
 
 ### Phase 4: Human Dashboard & Governed Agent Errand (Days 9-10)
 - [ ] Next.js human control dashboard (real-time approval cards, spend graph, kill switch)
-- [ ] Autonomous errand agent (Gemini 2.5 Flash / ADK)
-- [ ] Governed Olostep web research & Crustdata vendor risk integration
+- [x] Autonomous errand agent (Gemini / ADK) [Verified: demo/errand_agent.py live run successful]
+- [x] Governed Olostep web research & Crustdata vendor risk integration [Verified: Scrape & Verify executed]
 - [ ] Human-in-the-loop approval triggers via Bitsbee Ops / n8n
 
 ### Phase 5: Hostile Evaluation & Hardening (Days 11-12)
