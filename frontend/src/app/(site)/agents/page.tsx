@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
+import { IdentityCard, ScaledStage } from "@/components/trust-triptych";
 
 interface AgentRecord {
   id: string;
@@ -126,6 +127,9 @@ export default function AgentsPage() {
     toast.success(`Agent ${id} registered and Ed25519 Pass minted!`);
   };
 
+  const newestActive = agents.find(a => a.status === "ACTIVE") || agents[0];
+  const activeCount = agents.filter(a => a.status === "ACTIVE").length;
+
   return (
     <main className="min-h-screen pt-32 pb-20 bg-background">
       <div className="container px-4 max-w-7xl mx-auto">
@@ -161,8 +165,9 @@ export default function AgentsPage() {
           </div>
         </div>
 
-        {/* Agents Grid / Table */}
-        <div className="mt-8 space-y-4">
+        {/* Agents Grid / Table & Identity Card Rail */}
+        <div className="mt-8 flex flex-col xl:flex-row gap-8 items-start">
+          <div className="flex-1 w-full space-y-4">
           {agents.map((agent) => (
             <Card key={agent.id} className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -247,6 +252,18 @@ export default function AgentsPage() {
               </div>
             </Card>
           ))}
+          </div>
+
+          {/* Right Rail: Signature Identity Card */}
+          <div className="w-full xl:w-[440px] max-w-[440px] mx-auto xl:mx-0 shrink-0">
+            <ScaledStage designWidth={440} designHeight={586}>
+              <IdentityCard
+                agentId={newestActive.id}
+                fingerprint={newestActive.keyFingerprint}
+                additionalPasses={Math.max(activeCount - 1, 0)}
+              />
+            </ScaledStage>
+          </div>
         </div>
 
         {/* View Pass Dialog */}

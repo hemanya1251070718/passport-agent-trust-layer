@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
+import { AccountabilityCard, ScaledStage } from "@/components/trust-triptych";
 
 interface AuditBlock {
   index: number;
@@ -145,6 +146,18 @@ export default function AuditPage() {
             >
               <Download className="w-4 h-4" /> Export Flight Recorder
             </Button>
+          </div>
+        </div>
+
+        {/* Verifiable Accountability Stage */}
+        <div className="my-8 flex justify-center lg:justify-start">
+          <div className="w-full max-w-[440px]">
+            <ScaledStage designWidth={440} designHeight={586}>
+              <AccountabilityCard
+                pendingApproval={{ amountUsd: 28.5 }}
+                chain={{ blocks: 1048, intact: integrityStatus === "VERIFIED" }}
+              />
+            </ScaledStage>
           </div>
         </div>
 

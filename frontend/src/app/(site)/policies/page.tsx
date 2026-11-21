@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
+import { PolicyKernelCard, ScaledStage } from "@/components/trust-triptych";
 
 export default function PoliciesPage() {
   const [defaultDeny, setDefaultDeny] = useState(true);
@@ -306,9 +307,22 @@ export default function PoliciesPage() {
             </Card>
           </div>
 
-          {/* Right Column: Interactive Policy Simulator */}
+          {/* Right Column: Policy Kernel Visualizer & Interactive Policy Simulator */}
           <div className="lg:col-span-5 flex flex-col gap-6">
-            <Card className="bg-white/5 border border-white/10 rounded-xl p-6 sticky top-28">
+            <div className="w-full max-w-[440px] mx-auto lg:mx-0">
+              <ScaledStage designWidth={440} designHeight={586}>
+                <PolicyKernelCard
+                  baseline={{
+                    latencyMs: "0.082",
+                    blockedPct: "98.4",
+                    callsK: "128",
+                  }}
+                  siteLabel="policy.kernel"
+                />
+              </ScaledStage>
+            </div>
+
+            <Card className="bg-white/5 border border-white/10 rounded-xl p-6">
               <div className="flex items-center justify-between pb-3 border-b border-white/10">
                 <h3 className="font-bold text-white text-base flex items-center gap-2">
                   <Play className="w-5 h-5 text-primary" /> Test Policy Simulator

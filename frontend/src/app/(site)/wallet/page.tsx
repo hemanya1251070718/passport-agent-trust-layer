@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PeakChart } from "@/components/ui/peak-chart";
 import toast from "react-hot-toast";
+import { AccountabilityCard, ScaledStage } from "@/components/trust-triptych";
 
 interface Transaction {
   id: string;
@@ -157,6 +158,18 @@ export default function WalletPage() {
             >
               <Download className="w-4 h-4" /> Export CSV
             </Button>
+          </div>
+        </div>
+
+        {/* Verifiable Accountability Card */}
+        <div className="my-8 flex justify-center lg:justify-start">
+          <div className="w-full max-w-[440px]">
+            <ScaledStage designWidth={440} designHeight={586}>
+              <AccountabilityCard
+                pendingApproval={{ amountUsd: 28.5 }}
+                chain={{ blocks: 1048, intact: true }}
+              />
+            </ScaledStage>
           </div>
         </div>
 

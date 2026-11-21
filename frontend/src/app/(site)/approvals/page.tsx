@@ -15,6 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
+import { AccountabilityCard, ScaledStage } from "@/components/trust-triptych";
 
 interface ApprovalTicket {
   id: string;
@@ -90,6 +91,7 @@ export default function ApprovalsPage() {
   });
 
   const pendingCount = tickets.filter(t => t.status === "PENDING").length;
+  const topPending = tickets.find(t => t.status === "PENDING");
 
   return (
     <main className="min-h-screen pt-32 pb-20 bg-background">
@@ -133,6 +135,18 @@ export default function ApprovalsPage() {
             >
               Resolved
             </Button>
+          </div>
+        </div>
+
+        {/* Accountability Status Stage */}
+        <div className="my-8 flex justify-center lg:justify-start">
+          <div className="w-full max-w-[440px]">
+            <ScaledStage designWidth={440} designHeight={586}>
+              <AccountabilityCard
+                pendingApproval={topPending ? { amountUsd: Number(topPending.parameters?.amount) || 28.5 } : null}
+                chain={{ blocks: 1048, intact: true }}
+              />
+            </ScaledStage>
           </div>
         </div>
 

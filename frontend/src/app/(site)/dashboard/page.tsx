@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PeakChart } from "@/components/ui/peak-chart";
 import { useAuth } from "@/lib/auth-context";
+import { TrustTriptych } from "@/components/trust-triptych";
 
 interface MetricCardProps {
   title: string;
@@ -100,6 +101,29 @@ export default function DashboardPage() {
               <Play className="w-3.5 h-3.5 mr-1" /> Run Live Errand
             </Button>
           </div>
+        </div>
+
+        {/* Passport Trust Triptych */}
+        <div className="my-8">
+          <TrustTriptych
+            className="w-full"
+            identity={{
+              agentId: "agent_errand_01",
+              fingerprint: "ed25519:7a4f9b2c8e1d3a5f",
+              additionalPasses: 11,
+            }}
+            policy={{
+              baseline: {
+                latencyMs: latency.replace(" ms", "") || "0.082",
+                blockedPct: "98.4",
+                callsK: "128",
+              },
+            }}
+            accountability={{
+              pendingApproval: { amountUsd: 28.5 },
+              chain: { blocks: 1048, intact: true },
+            }}
+          />
         </div>
 
         {/* Metrics Grid */}
