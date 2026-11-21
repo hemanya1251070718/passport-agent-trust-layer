@@ -2,12 +2,17 @@
 
 **Okta + Stripe Limits + Flight Recorder, for Autonomous AI Agents.**
 
+[![Live on Cloud Run](https://img.shields.io/badge/Google%20Cloud%20Run-Live-brightgreen)](https://passport-trust-gateway-58223756937.asia-south1.run.app/health)
 [![Security & Secret Scan](https://github.com/hemanya1251070718/passport-agent-trust-layer/actions/workflows/security.yml/badge.svg)](https://github.com/hemanya1251070718/passport-agent-trust-layer/actions)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.13-blue)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Frontend-Next.js%2014-black)](https://nextjs.org)
 [![Adversarial Benchmark](https://img.shields.io/badge/Red--Team%20Block%20Rate-100.0%25-brightgreen)](file:///d:/VIT%20PUNE/HACKATHONS/homingo/redteam/trust_report.json)
+
+> **Live Gateway Endpoint:** [https://passport-trust-gateway-58223756937.asia-south1.run.app](https://passport-trust-gateway-58223756937.asia-south1.run.app)  
+> **JWKS Public Key:** [https://passport-trust-gateway-58223756937.asia-south1.run.app/api/v1/auth/jwks](https://passport-trust-gateway-58223756937.asia-south1.run.app/api/v1/auth/jwks)  
+> **Health Probe:** [https://passport-trust-gateway-58223756937.asia-south1.run.app/health](https://passport-trust-gateway-58223756937.asia-south1.run.app/health)
 
 > **Homingo Hack Days (Edition 01)** • **Track: Agents**  
 > **Problem Statement A1: Software built for agents**  

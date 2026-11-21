@@ -4,6 +4,7 @@
 $PROJECT_ID = "project-c678e6e8-2896-441b-a53"
 $REGION = "asia-south1"
 $SERVICE_NAME = "passport-trust-gateway"
+$LIVE_URL = "https://passport-trust-gateway-58223756937.asia-south1.run.app"
 
 Write-Host "Configuring active project to $PROJECT_ID..." -ForegroundColor Cyan
 gcloud config set project $PROJECT_ID
