@@ -82,8 +82,7 @@ export const Introduction = () => {
         </div>
         <div className='mt-5'>
           <p className='text-base font-medium text-muted/60'>
-            Crypgo Tailwind NextJs Template is built with Tailwindcss and
-            Nextjs.
+            Passport Agent Trust Layer control plane is built with FastAPI, Next.js, and Tailwind CSS.
           </p>
           <p className='text-base font-medium text-muted/60'>
             These theme is ready to use and you can totally customize as per

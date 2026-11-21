@@ -1,6 +1,5 @@
 'use client'
 import Image from 'next/image'
-import { timelineData } from '@/app/api/data'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
@@ -8,129 +7,134 @@ const TimeLine = () => {
   const ref = useRef(null)
   const inView = useInView(ref)
 
-  const TopAnimation = {
-    initial: { y: '-100%', opacity: 0 },
-    animate: inView ? { y: 0, opacity: 1 } : { y: '-100%', opacity: 0 },
-    transition: { duration: 0.6, delay: 0.4 },
-  }
   return (
-    <section className='md:pt-40 pt-9' id='development'>
+    <section className='md:pt-32 pt-9' id='development'>
       <div className='container lg:px-16 px-4'>
         <div className='text-center'>
           <motion.div
             whileInView={{ y: 0, opacity: 1 }}
-            initial={{ y: '-100%', opacity: 0 }}
+            initial={{ y: '-50%', opacity: 0 }}
             transition={{ duration: 0.6 }}>
             <div className='flex flex-col gap-4'>
               <p className='text-white font-medium'>
-                We deliver <span className='text-primary'>best solution</span>
+                Cryptographic <span className='text-primary'>Control Flow</span>
               </p>
-              <h2 className='text-white sm:text-5xl text-3xl font-medium lg:w-80% mx-auto mb-20'>
-                One application with multiple options to give you freedom of buying & selling
+              <h2 className='text-white sm:text-5xl text-3xl font-medium lg:w-80% mx-auto mb-16'>
+                The 4-Stage Security Lifecycle of Every Agent Errand
               </h2>
             </div>
           </motion.div>
+
           <motion.div
             whileInView={{ scale: 1, opacity: 1 }}
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.6 }}>
             <div className='md:block hidden relative'>
               <div>
                 <Image
                   src='/images/timeline/img-timeline.png'
-                  alt='image'
+                  alt='Passport Security Lifecycle'
                   width={1220}
                   height={1000}
-                  className='w-80% mx-auto'
+                  className='w-80% mx-auto opacity-70'
                 />
               </div>
-              <div className='absolute lg::top-40 top-36 lg:left-0 -left-20 w-72 flex items-center gap-6'>
+
+              {/* Node 1: Delegation */}
+              <div className='absolute lg:top-40 top-36 lg:left-0 -left-20 w-72 flex items-center gap-6'>
                 <div className='text-right'>
-                  <h3 className='text-muted text-2xl mb-3'>Planning</h3>
-                  <p className='text-lg text-muted/60'>
-                    Map the crypto projects scope with framer template
+                  <h3 className='text-muted text-2xl mb-2 font-bold'>1. Delegation</h3>
+                  <p className='text-sm text-muted/80'>
+                    Principal issues Ed25519 capability token with explicit scopes and TTL
                   </p>
                 </div>
-                <div className='bg-primary/15 backdrop-blur-xs px-6 py-2 h-fit rounded-full'>
+                <div className='bg-primary/20 backdrop-blur-xs p-4 h-fit rounded-full border border-primary/30'>
                   <Image
                     src='/images/solution/solution-icon-1.svg'
-                    alt='Planning'
-                    width={44}
-                    height={44}
-                    className='w-16 h-16 '
+                    alt='Delegation'
+                    width={40}
+                    height={40}
+                    className='w-10 h-10'
                   />
                 </div>
               </div>
+
+              {/* Node 2: Interception */}
               <div className='absolute lg:top-40 top-36 lg:right-0 -right-20 w-72 flex items-center gap-6'>
-                <div className='bg-primary/15 backdrop-blur-xs p-6 h-fit rounded-full'>
+                <div className='bg-primary/20 backdrop-blur-xs p-4 h-fit rounded-full border border-primary/30'>
                   <Image
                     src='/images/solution/solution-icon-2.svg'
-                    alt='Refinement'
-                    width={44}
-                    height={44}
+                    alt='Interception'
+                    width={40}
+                    height={40}
+                    className='w-10 h-10'
                   />
                 </div>
                 <div className='text-left'>
-                  <h3 className='text-muted text-2xl mb-3'>Refinement</h3>
-                  <p className='text-lg text-muted/60'>
-                  Refine & improve your crypto landing page
+                  <h3 className='text-muted text-2xl mb-2 font-bold'>2. Intercept</h3>
+                  <p className='text-sm text-muted/80'>
+                    Sub-millisecond regex & SSRF check against default-deny policy rules
                   </p>
                 </div>
               </div>
+
+              {/* Node 3: Spend Sandbox */}
               <div className='absolute lg:bottom-48 bottom-36 lg:left-0 -left-20 w-72 flex items-center gap-6'>
                 <div className='text-right'>
-                  <h3 className='text-muted text-2xl mb-3'>Prototype</h3>
-                  <p className='text-lg text-muted/60'>
-                  Build crypto website test for your product
+                  <h3 className='text-muted text-2xl mb-2 font-bold'>3. Sandboxed Spend</h3>
+                  <p className='text-sm text-muted/80'>
+                    Virtual treasury card enforced per-tx cap ($15) and 24h velocity cap
                   </p>
                 </div>
-                <div className='bg-primary/15 backdrop-blur-xs px-6 py-2 h-fit rounded-full'>
+                <div className='bg-primary/20 backdrop-blur-xs p-4 h-fit rounded-full border border-primary/30'>
                   <Image
                     src='/images/solution/solution-icon-3.svg'
-                    alt='Prototype'
-                    width={44}
-                    height={44}
-                    className='w-16 h-16 '
+                    alt='Spend'
+                    width={40}
+                    height={40}
+                    className='w-10 h-10'
                   />
                 </div>
               </div>
+
+              {/* Node 4: Flight Recorder */}
               <div className='absolute lg:bottom-48 bottom-36 lg:right-0 -right-20 w-72 flex items-center gap-6'>
-                <div className='bg-primary/15 backdrop-blur-xs px-6 py-2 h-fit rounded-full'>
+                <div className='bg-primary/20 backdrop-blur-xs p-4 h-fit rounded-full border border-primary/30'>
                   <Image
                     src='/images/solution/solution-icon-4.svg'
-                    alt='Scale and support'
-                    width={44}
-                    height={44}
-                    className='w-16 h-16'
+                    alt='Flight Recorder'
+                    width={40}
+                    height={40}
+                    className='w-10 h-10'
                   />
                 </div>
                 <div className='text-left'>
-                  <h3 className='text-muted text-nowrap text-2xl mb-3'>
-                    Support
-                  </h3>
-                  <p className='text-lg text-muted/60'>
-                  Deploy product live and ensure expert support
+                  <h3 className='text-muted text-2xl mb-2 font-bold'>4. Flight Recorder</h3>
+                  <p className='text-sm text-muted/80'>
+                    SHA-256 hash-chained Merkle ledger provides non-repudiation and audits
                   </p>
                 </div>
               </div>
             </div>
-            <div className='grid sm:grid-cols-2 gap-8 md:hidden'>
-              {timelineData.map((item, index) => (
-                <div key={index} className='flex items-center gap-6'>
-                  <div className='bg-primary/15 p-6 rounded-full'>
-                    <Image
-                      src={item.icon}
-                      alt={item.title}
-                      width={44}
-                      height={44}
-                    />
-                  </div>
-                  <div className='text-start'>
-                    <h4 className='text-2xl text-muted mb-2'>{item.title}</h4>
-                    <p className='text-muted/60 text-lg'>{item.text}</p>
-                  </div>
-                </div>
-              ))}
+
+            {/* Mobile View */}
+            <div className='md:hidden grid grid-cols-1 gap-6 text-left mt-8'>
+              <div className='p-4 bg-white/5 border border-white/10 rounded-xl'>
+                <h4 className='font-bold text-primary mb-1'>1. Delegation</h4>
+                <p className='text-xs text-white/70'>Principal issues Ed25519 capability token with explicit scopes and TTL</p>
+              </div>
+              <div className='p-4 bg-white/5 border border-white/10 rounded-xl'>
+                <h4 className='font-bold text-primary mb-1'>2. Interception</h4>
+                <p className='text-xs text-white/70'>Sub-millisecond regex & SSRF check against default-deny policy rules</p>
+              </div>
+              <div className='p-4 bg-white/5 border border-white/10 rounded-xl'>
+                <h4 className='font-bold text-primary mb-1'>3. Sandboxed Spend</h4>
+                <p className='text-xs text-white/70'>Virtual treasury card enforced per-tx cap ($15) and 24h velocity cap</p>
+              </div>
+              <div className='p-4 bg-white/5 border border-white/10 rounded-xl'>
+                <h4 className='font-bold text-primary mb-1'>4. Flight Recorder</h4>
+                <p className='text-xs text-white/70'>SHA-256 hash-chained Merkle ledger provides non-repudiation and audits</p>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -139,4 +143,4 @@ const TimeLine = () => {
   )
 }
 
-export default TimeLine
+export default TimeLine;

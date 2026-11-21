@@ -11,8 +11,12 @@ import SignUp from "@/components/Auth/SignUp";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth-context";
+import { Badge } from "@/components/ui/badge";
+import { User, LogOut } from "lucide-react";
 
 const Header: React.FC = () => {
+  const { user, signOut } = useAuth();
   const pathUrl = usePathname();
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [sticky, setSticky] = useState(false);
@@ -62,22 +66,45 @@ const Header: React.FC = () => {
                 />
               ))}
             </nav>
-            <div className="lg:flex hidden gap-4 h-10">
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => setSignInOpen(true)}
-                className="bg-transparent border border-primary! text-primary px-4 py-2 rounded-lg hover:bg-primary! hover:text-white h-full transition-all duration-300"
-              >
-                Sign In
-              </Button>
-              <Button
-                size="lg"
-                onClick={() => setSignUpOpen(true)}
-                className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-transparent hover:text-primary h-full transition-all duration-300 font-medium hover:border hover:border-primary"
-              >
-                Sign Up
-              </Button>
+            <div className="lg:flex hidden gap-3 items-center h-10">
+              {user ? (
+                <>
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs">
+                    <User className="w-3.5 h-3.5 text-primary" />
+                    <span className="text-white/80 font-mono">{user.displayName.split(" ")[0]}</span>
+                    <Badge variant="outline" className="text-[10px] py-0 px-1.5 border-primary/40 text-primary uppercase font-mono">
+                      {user.role}
+                    </Badge>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => signOut()}
+                    className="border-white/15 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white text-xs h-9 px-3"
+                    title="Sign Out"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    onClick={() => setSignInOpen(true)}
+                    className="bg-transparent border border-primary! text-primary px-4 py-2 rounded-lg hover:bg-primary! hover:text-white h-full transition-all duration-300"
+                  >
+                    Sign In
+                  </Button>
+                  <Button
+                    size="lg"
+                    onClick={() => setSignUpOpen(true)}
+                    className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-transparent hover:text-primary h-full transition-all duration-300 font-medium hover:border hover:border-primary"
+                  >
+                    Sign Up
+                  </Button>
+                </>
+              )}
             </div>
 
             <Sheet open={navbarOpen} onOpenChange={setNavbarOpen}>

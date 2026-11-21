@@ -1,34 +1,35 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ArrowRight, Terminal } from "lucide-react";
 
 const Platform = () => {
   return (
-    <section className="md:pt-44 sm:pt-24 pt-12 relative z-1">
+    <section className="md:pt-40 sm:pt-24 pt-12 relative z-1">
       <div className="container px-4">
-        <div className="bg-section/10 px-16 py-14 rounded-3xl border-2 border-white/10 grid grid-cols-12 items-center before:content-[''] before:absolute relative before:w-96 before:h-64 before:bg-start before:bg-no-repeat before:-bottom-6 overflow-hidden lg:before:right-0 before:-z-1 before:opacity-10 ">
+        <div className="bg-white/5 px-8 md:px-16 py-14 rounded-3xl border border-white/10 grid grid-cols-12 items-center relative overflow-hidden backdrop-blur-md">
           <div className="lg:col-span-8 col-span-12">
-            <h2 className="text-white sm:text-[40px] text-3xl mb-6">
-              Crypgo powered by Shadcn Nextjs
+            <div className="flex items-center gap-2 text-primary font-mono text-sm mb-3">
+              <Terminal className="w-4 h-4" /> Native Python SDK & MCP Server Gateway
+            </div>
+            <h2 className="text-white sm:text-[40px] text-3xl font-bold mb-4 tracking-tight">
+              Plug-and-Play Security for Agent Swarms
             </h2>
-            <p className="text-muted/60 text-lg">
-              Our landing page empower shadcn developers to have free, safer and
-              more trustworthy experiences
+            <p className="text-muted/80 text-lg leading-relaxed">
+              Wrap your existing LangChain, CrewAI, AutoGen, or custom autonomous agents in 3 lines of code.
+              Includes a complete Model Context Protocol (MCP) proxy for tool policy enforcement.
             </p>
           </div>
           <div className="lg:col-span-4 col-span-12">
-            <div className="flex lg:justify-end lg:mt-0 mt-7 justify-center">
+            <div className="flex lg:justify-end lg:mt-0 mt-7 justify-start gap-4">
               <Button
-                render={<Link href="https://www.shadcnspace.com/templates/" />}
-                className="flex items-center gap-2.5 text-background bg-primary hover:bg-primary/80 border border-primary py-6 px-5 rounded-lg sm:text-21 text-lg font-medium h-14"
+                asChild
+                className="flex items-center gap-2 text-black bg-primary hover:bg-primary/90 py-6 px-6 rounded-lg text-base font-semibold h-12"
               >
-                Get template
-                <Image
-                  src={"/images/icons/icon-arrow.svg"}
-                  alt="icon"
-                  width={20}
-                  height={20}
-                />
+                <Link href="/documentation">
+                  Developer Docs
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               </Button>
             </div>
           </div>

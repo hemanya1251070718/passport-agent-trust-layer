@@ -5,55 +5,56 @@ import { motion } from 'framer-motion'
 
 const Portfolio = () => {
   return (
-    <section className='pt-12' id='portfolio'>
+    <section className='pt-24' id='portfolio'>
       <div className='container px-4 sm:px-6'>
-        <div className='grid lg:grid-cols-2 items-center gap-20'>
+        <div className='grid lg:grid-cols-2 items-center gap-16'>
           <motion.div
             whileInView={{ y: 0, opacity: 1 }}
-            initial={{ y: '-100%', opacity: 0 }}
+            initial={{ y: '-50%', opacity: 0 }}
             transition={{ duration: 0.6 }}
-            className='lg:-ml-32'>
+            className='lg:-ml-12'>
             <Image
               src='/images/portfolio/img-portfolio.png'
-              alt='Crypto Portfolio'
+              alt='Passport Control Architecture'
               width={780}
               height={700}
+              className='rounded-2xl border border-white/10 shadow-2xl'
             />
           </motion.div>
 
           <motion.div
             whileInView={{ y: 0, opacity: 1 }}
-            initial={{ y: '100%', opacity: 0 }}
+            initial={{ y: '50%', opacity: 0 }}
             transition={{ duration: 0.6 }}>
             <div className='flex flex-col gap-4'>
               <p className='text-white font-medium'>
-                Crypto landing page <span className='text-primary'>template</span>
+                Unified Agent Governance <span className='text-primary'>Architecture</span>
               </p>
-              <h2 className='text-white sm:text-5xl text-3xl mb-4 font-medium'>
-                Create your cryptocurrency portfolio today
+              <h2 className='text-white sm:text-5xl text-3xl font-bold leading-tight'>
+                Complete Defense-in-Depth for Autonomous Swarms
               </h2>
             </div>
-            <p className='text-muted/60 text-lg'>
-              Coinbase has a variety of features that make it the best place
-              to start trading.
+            <p className='text-muted/80 text-lg mt-4'>
+              Passport delivers full visibility, cryptographic non-repudiation, and proactive
+              guardrails across every tool, API, and financial settlement an agent initiates.
             </p>
 
-            <table className='w-full sm:w-[80%] mt-10'>
+            <table className='w-full sm:w-[90%] mt-8'>
               <tbody>
                 {portfolioData.map((item, index) => (
-                  <tr key={index} className='border-b border-border'>
-                    <td className='py-5'>
-                      <div className='bg-primary/20 p-3 rounded-full w-fit'>
+                  <tr key={index} className='border-b border-border/50'>
+                    <td className='py-4'>
+                      <div className='bg-primary/20 p-2.5 rounded-xl w-fit border border-primary/30'>
                         <Image
                           src={item.image}
                           alt={item.title}
-                          width={24}
-                          height={24}
+                          width={22}
+                          height={22}
                         />
                       </div>
                     </td>
-                    <td className='py-5'>
-                      <h3 className='text-muted text-xl ml-5'>
+                    <td className='py-4'>
+                      <h3 className='text-muted text-base ml-4 font-medium'>
                         {item.title}
                       </h3>
                     </td>
@@ -68,4 +69,4 @@ const Portfolio = () => {
   )
 }
 
-export default Portfolio
+export default Portfolio;
