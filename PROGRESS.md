@@ -25,7 +25,7 @@
 - [x] Define cryptographic delegation token specification (RFC 7519 / Ed25519) (`ARCHITECTURE.md`, `DATA_MODEL.md`)
 - [x] Detail default-deny policy schema & risk scoring rules (`THREAT_MODEL.md`, `DATA_MODEL.md`)
 - [x] Design SHA-256 hash-chained audit log data model (`DATA_MODEL.md`, `backend/app/core/audit.py`)
-- [x] Deploy initial Cloud Run service skeleton and health probes (`Dockerfile`, `deploy_gcp.ps1`, `/health`, `/api/v1/auth/jwks`) [Verified: 17/17 Pytest passing]
+- [x] Deploy initial Cloud Run service skeleton and health probes (`Dockerfile`, `deploy_gcp.ps1`, `/health`, `/api/v1/auth/jwks`) [Verified LIVE: https://passport-trust-gateway-58223756937.asia-south1.run.app/health - 200 OK, Scale-to-Zero $0 idle cost]
 
 ### Phase 2: Core Trust Engine (Days 3-5)
 - [x] Token minting & verification service (FastAPI) [Verified: 14/14 Pytest passing]
