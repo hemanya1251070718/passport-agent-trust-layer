@@ -32,6 +32,19 @@ class CryptoEngine:
     def get_public_key_b64(self) -> str:
         return base64.urlsafe_b64encode(self.get_public_key_bytes()).decode("utf-8").rstrip("=")
 
+    def get_jwks(self) -> dict:
+        return {
+            "keys": [
+                {
+                    "kty": "OKP",
+                    "crv": "Ed25519",
+                    "x": self.get_public_key_b64(),
+                    "use": "sig",
+                    "kid": "passport-ed25519-v1"
+                }
+            ]
+        }
+
     def mint_token(
         self,
         principal_id: str,

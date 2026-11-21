@@ -17,6 +17,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+@app.get("/health")
+async def root_health():
+    return {
+        "status": "healthy",
+        "service": settings.PROJECT_NAME,
+        "version": settings.VERSION,
+        "message": "Passport Agent Trust & Control Layer Gateway"
+    }
+
 app.include_router(router)
 
 if __name__ == "__main__":

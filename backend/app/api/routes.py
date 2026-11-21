@@ -43,6 +43,10 @@ async def health_check():
         "audit_total_events": integrity.total_events
     }
 
+@router.get("/auth/jwks")
+async def get_jwks():
+    return crypto.get_jwks()
+
 # --- AUTH & DELEGATION TOKENS ---
 @router.post("/auth/mint", response_model=TokenMintResponse)
 async def mint_delegation_token(req: TokenMintRequest):
