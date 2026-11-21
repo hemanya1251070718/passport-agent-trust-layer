@@ -1,7 +1,9 @@
 import uuid
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
+from datetime import datetime, timezone
 from backend.app.core.crypto import CryptoEngine
 from backend.app.core.audit import AuditLedger
+from backend.app.core.db import Database
 from backend.app.services.partner_integrations import CrustdataRiskAnalyzer
 from backend.app.services.approval_service import ApprovalService
 from backend.app.models.schemas import SpendRequest, SpendResponse
@@ -10,12 +12,11 @@ class SandboxedWallet:
     _instance = None
 
     def __init__(self):
+        self.db = Database.get_instance()
         self.crypto = CryptoEngine.get_instance()
         self.audit = AuditLedger.get_instance()
         self.crustdata = CrustdataRiskAnalyzer()
         self.approvals = ApprovalService.get_instance()
-        # Per-agent ledger: agent_id -> total_spent
-        self._agent_spent: Dict[str, float] = {}
 
     @classmethod
     def get_instance(cls):
@@ -24,7 +25,23 @@ class SandboxedWallet:
         return cls._instance
 
     def get_spent(self, agent_id: str) -> float:
-        return self._agent_spent.get(agent_id, 0.0)
+        with self.db.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT COALESCE(SUM(amount), 0.0) as total FROM wallet_transactions WHERE agent_id = ? AND status = 'SETTLED';",
+                (agent_id,)
+            )
+            return float(cursor.fetchone()["total"])
+
+    def get_recent_transactions(self, limit: int = 50) -> List[Dict[str, Any]]:
+        with self.db.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT * FROM wallet_transactions ORDER BY timestamp DESC LIMIT ?;",
+                (limit,)
+            )
+            rows = cursor.fetchall()
+            return [dict(r) for r in rows]
 
     async def execute_spend(self, req: SpendRequest) -> SpendResponse:
         # 1. Verify Delegation Token
@@ -102,7 +119,6 @@ class SandboxedWallet:
         # 5. Crustdata Vendor Risk Assessment
         vendor_eval = await self.crustdata.evaluate_vendor(req.merchant_domain)
         if vendor_eval.get("risk_score", 0.0) >= 0.7:
-            # High risk vendor - block deterministically
             entry = self.audit.record_event(
                 agent_id=req.agent_id,
                 action="WALLET_SPEND_ATTEMPT",
@@ -123,7 +139,6 @@ class SandboxedWallet:
         # 6. Execute Approved Sandboxed Spend
         tx_id = f"tx_sim_{uuid.uuid4().hex[:12]}"
         new_spent = current_spent + req.amount
-        self._agent_spent[req.agent_id] = new_spent
         remaining = claims.budget_limit - new_spent
 
         entry = self.audit.record_event(
@@ -140,10 +155,25 @@ class SandboxedWallet:
             }
         )
 
+        # Persist transaction in database
+        with self.db.get_connection() as conn:
+            conn.execute(
+                """
+                INSERT INTO wallet_transactions (
+                    id, agent_id, delegation_jti, merchant, purpose, amount, status, block_index, timestamp
+                ) VALUES (?, ?, ?, ?, ?, ?, 'SETTLED', ?, ?);
+                """,
+                (
+                    tx_id, req.agent_id, claims.jti, req.merchant_domain, req.purpose,
+                    req.amount, entry.index, datetime.now(timezone.utc).isoformat()
+                )
+            )
+            conn.commit()
+
         return SpendResponse(
             success=True,
             transaction_id=tx_id,
             remaining_budget=remaining,
-            reason="Transaction approved and settled in simulated ledger",
+            reason="Transaction approved and settled in persistent ledger",
             audit_hash=entry.entry_hash
         )

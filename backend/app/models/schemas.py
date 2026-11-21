@@ -9,9 +9,19 @@ class TokenMintRequest(BaseModel):
     allowed_merchants: List[str] = Field(default=["*"], description="Allowlist of vendor domains or '*' for any verified")
     expires_in_seconds: int = Field(default=3600, description="Token validity duration in seconds")
 
+class SubDelegationMintRequest(BaseModel):
+    parent_token: str = Field(..., description="Valid signed parent delegation token string")
+    sub_agent_id: str = Field(..., description="Target sub-agent identifier (e.g. agent-scraper-sub)")
+    scopes: List[str] = Field(..., description="Attenuated subset of parent scopes")
+    budget_limit: float = Field(default=5.0, description="Budget cap (must be <= parent remaining budget)")
+    per_tx_limit: float = Field(default=5.0, description="Single-tx cap (must be <= parent per_tx_limit)")
+    allowed_merchants: List[str] = Field(default=["*"], description="Allowlist of vendor domains")
+    expires_in_seconds: int = Field(default=1800, description="Duration in seconds (must expire <= parent)")
+
 class TokenMintResponse(BaseModel):
     token: str
     token_id: str
+    parent_id: Optional[str] = None
     agent_id: str
     principal_id: str
     scopes: List[str]
@@ -22,6 +32,7 @@ class TokenMintResponse(BaseModel):
 
 class TokenClaims(BaseModel):
     jti: str
+    parent_jti: Optional[str] = None
     iss: str
     sub: str
     agent_id: str
@@ -31,6 +42,25 @@ class TokenClaims(BaseModel):
     allowed_merchants: List[str]
     iat: int
     exp: int
+
+class AgentRegisterRequest(BaseModel):
+    agent_id: str
+    name: str
+    role: str
+    max_daily_budget: float = 50.0
+    single_tx_cap: float = 15.0
+    allowed_scopes: List[str]
+
+class AgentResponse(BaseModel):
+    agent_id: str
+    name: str
+    role: str
+    principal_id: str
+    max_daily_budget: float
+    single_tx_cap: float
+    allowed_scopes: List[str]
+    status: str
+    created_at: str
 
 class ToolEvaluationRequest(BaseModel):
     agent_id: str
