@@ -9,7 +9,7 @@ import type { Metadata } from 'next'
 import { AuthProvider } from '@/lib/auth-context'
 import { Toaster } from 'react-hot-toast'
 
-const font = DM_Sans({ subsets: ['latin'] })
+const font = DM_Sans({ subsets: ['latin'], variable: '--font-dm-sans' })
 
 export const metadata: Metadata = {
   title: 'Passport — Trust, Identity & Control Layer for Autonomous AI Agents',
@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={`${font.className}`}>
+      <body className={`${font.className} ${font.variable}`}>
         <ThemeProvider
           attribute='class'
           enableSystem={true}

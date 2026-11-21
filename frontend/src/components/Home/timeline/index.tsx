@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { SecurityLifecyclePhoneMockup } from './phone-lifecycle'
 
 const TimeLine = () => {
   const ref = useRef(null)
@@ -30,14 +31,8 @@ const TimeLine = () => {
             initial={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.6 }}>
             <div className='md:block hidden relative'>
-              <div>
-                <Image
-                  src='/images/timeline/img-timeline.png'
-                  alt='Passport Security Lifecycle'
-                  width={1220}
-                  height={1000}
-                  className='w-80% mx-auto opacity-70'
-                />
+              <div className='my-6'>
+                <SecurityLifecyclePhoneMockup />
               </div>
 
               {/* Node 1: Delegation */}

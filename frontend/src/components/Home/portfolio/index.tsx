@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import { portfolioData } from '@/app/api/data'
 import { motion } from 'framer-motion'
+import { DefenseCardsMockup } from './defense-cards-mockup'
 
 const Portfolio = () => {
   return (
@@ -13,13 +14,7 @@ const Portfolio = () => {
             initial={{ y: '-50%', opacity: 0 }}
             transition={{ duration: 0.6 }}
             className='lg:-ml-12'>
-            <Image
-              src='/images/portfolio/img-portfolio.png'
-              alt='Passport Control Architecture'
-              width={780}
-              height={700}
-              className='rounded-2xl border border-white/10 shadow-2xl'
-            />
+            <DefenseCardsMockup />
           </motion.div>
 
           <motion.div

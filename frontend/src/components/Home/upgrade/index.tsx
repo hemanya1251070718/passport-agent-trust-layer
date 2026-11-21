@@ -1,6 +1,6 @@
 import { upgradeData } from "@/app/api/data";
-import Image from "next/image";
 import { CheckCircle2, ShieldCheck } from "lucide-react";
+import { AdversarialShieldMockup } from "./adversarial-shield-mockup";
 
 const Upgrade = () => {
   return (
@@ -29,13 +29,7 @@ const Upgrade = () => {
           </div>
           <div>
             <div className="ml-0 lg:ml-7 justify-self-center">
-              <Image
-                src="/images/upgrade/img-upgrade.png"
-                alt="Passport Enterprise Shield"
-                width={625}
-                height={580}
-                className="rounded-2xl border border-white/10 shadow-2xl"
-              />
+              <AdversarialShieldMockup />
             </div>
           </div>
         </div>

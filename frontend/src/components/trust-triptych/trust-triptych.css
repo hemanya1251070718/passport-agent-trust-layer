@@ -13,8 +13,8 @@
   --pt-panel: #05070d;
   --pt-line: rgba(184, 198, 229, 0.22);
   /* Swap --font-dm-sans for whatever variable layout.tsx exposes for DM Sans. */
-  --pt-sans: var(--font-dm-sans, Arial), Arial, Helvetica, sans-serif;
-  --pt-serif: "Times New Roman", Times, serif;
+  --pt-sans: var(--font-dm-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --pt-serif: var(--font-dm-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --pt-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   color: var(--pt-ink);
   color-scheme: dark;
