@@ -7,6 +7,7 @@ import SimulateErrandModal from "./sell-form";
 import CardSlider from "./slider";
 import { useState } from "react";
 import BrandLogo from "../BrandLogo";
+import HeroPhoneMockup from "./phone-mockup";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -116,21 +117,7 @@ const Hero = () => {
           </motion.div>
 
           <motion.div {...rightAnimation} className="w-full flex justify-center items-center">
-            <motion.div
-              animate={{ y: [0, -14, 0] }}
-              transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
-              className="w-full max-w-[540px] relative"
-            >
-              <div className="absolute -inset-4 bg-primary/20 rounded-full blur-3xl pointer-events-none opacity-60"></div>
-              <Image
-                src="/images/hero/hero-banner-img.png"
-                alt="Passport Agent Trust Mobile Interface"
-                width={584}
-                height={582}
-                priority
-                className="w-full h-auto object-contain relative z-10 drop-shadow-[0_25px_60px_rgba(56,189,248,0.3)]"
-              />
-            </motion.div>
+            <HeroPhoneMockup />
           </motion.div>
         </div>
 

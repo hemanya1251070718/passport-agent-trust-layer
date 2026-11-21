@@ -15,6 +15,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { PeakChart } from "@/components/ui/peak-chart";
 import toast from "react-hot-toast";
 
 interface AttackPreset {
@@ -217,8 +218,30 @@ export default function SandboxPage() {
             ))}
           </div>
 
-          {/* Right: Live Execution Console */}
+          {/* Right: Live Execution Console & Peak Telemetry */}
           <div className="lg:col-span-7 flex flex-col gap-6">
+            <div className="p-5 rounded-2xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
+              <div>
+                <span className="text-[10px] text-primary uppercase font-mono tracking-wider font-bold block mb-1">
+                  Kernel Telemetry
+                </span>
+                <h4 className="text-white font-bold text-base mb-1">Decision Gate Latency</h4>
+                <p className="text-xs text-white/60">Sub-millisecond policy check before any LLM tool execution.</p>
+              </div>
+              <div className="shrink-0 flex justify-center">
+                <PeakChart
+                  width={280}
+                  value={0.102}
+                  valueSuffix=" ms"
+                  decimals={3}
+                  title="Policy Latency"
+                  caption="Sub-millisecond decision gate"
+                  accent="#38bdf8"
+                  updatedText="Live Probe"
+                />
+              </div>
+            </div>
+
             <Card className="bg-black/80 border border-white/15 rounded-xl p-6 font-mono text-xs relative overflow-hidden shadow-2xl">
               <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
                 <div className="flex items-center gap-2">

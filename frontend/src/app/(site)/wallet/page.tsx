@@ -16,6 +16,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PeakChart } from "@/components/ui/peak-chart";
 import toast from "react-hot-toast";
 
 interface Transaction {
@@ -243,8 +244,24 @@ export default function WalletPage() {
             </Card>
           </div>
 
-          {/* Right: Simulate Spend */}
+          {/* Right: Telemetry & Simulate Spend */}
           <div className="lg:col-span-4 flex flex-col gap-6">
+            <div className="p-5 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 flex flex-col items-center justify-center">
+              <span className="text-xs text-white/50 block font-mono uppercase tracking-wider mb-2 self-start">
+                Velocity Curve
+              </span>
+              <PeakChart
+                width={320}
+                value={spentToday}
+                valueSuffix=" USD"
+                decimals={2}
+                title="24h Spend Velocity"
+                caption="Current cumulative spend against daily boundary"
+                accent="#10b981"
+                updatedText="Audited in Ledger"
+              />
+            </div>
+
             <Card className="bg-white/5 border border-white/10 rounded-xl p-6">
               <h3 className="font-bold text-white text-base mb-1 flex items-center gap-2">
                 <DollarSign className="w-5 h-5 text-primary" /> Simulate Virtual Spend

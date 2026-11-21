@@ -20,6 +20,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { PeakChart } from "@/components/ui/peak-chart";
 import { useAuth } from "@/lib/auth-context";
 
 interface MetricCardProps {
@@ -135,6 +136,60 @@ export default function DashboardPage() {
             trend="Action Required"
             color="text-amber-400"
           />
+        </div>
+
+        {/* Dynamic Peak Telemetry Charts */}
+        <div className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+          <div className="p-6 rounded-2xl bg-gradient-to-br from-white/5 via-white/[0.02] to-transparent border border-white/10 flex flex-col items-center justify-center overflow-hidden">
+            <div className="w-full flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+              <div>
+                <h3 className="text-white font-bold text-base flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-primary" /> Swarm Threat Interception Efficacy
+                </h3>
+                <p className="text-xs text-white/50 font-mono mt-0.5">Real-time adversarial block rate vs unverified model dispatches</p>
+              </div>
+              <Badge variant="outline" className="text-primary border-primary/30 text-[10px] font-mono">
+                100% BLOCKED
+              </Badge>
+            </div>
+            <div className="w-full flex justify-center py-2">
+              <PeakChart 
+                width={360} 
+                value={100} 
+                valueSuffix="%" 
+                title="Defense Efficacy" 
+                caption="Zero malicious breaches across 49 attack vectors"
+                accent="#38bdf8"
+                updatedText="Sentinel Live"
+              />
+            </div>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-gradient-to-br from-white/5 via-white/[0.02] to-transparent border border-white/10 flex flex-col items-center justify-center overflow-hidden">
+            <div className="w-full flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+              <div>
+                <h3 className="text-white font-bold text-base flex items-center gap-2">
+                  <DollarSign className="w-4 h-4 text-emerald-400" /> Sandboxed Spend Velocity
+                </h3>
+                <p className="text-xs text-white/50 font-mono mt-0.5">24h multi-agent treasury draw against $50 limit</p>
+              </div>
+              <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 text-[10px] font-mono">
+                VELOCITY STABLE
+              </Badge>
+            </div>
+            <div className="w-full flex justify-center py-2">
+              <PeakChart 
+                width={360} 
+                value={41.5} 
+                valueSuffix=" USD" 
+                decimals={1}
+                title="Treasury Headroom" 
+                caption="$8.50 spent today across 3 authorized agents"
+                accent="#10b981"
+                updatedText="Ledger Balanced"
+              />
+            </div>
+          </div>
         </div>
 
         {/* 2-Column Section */}

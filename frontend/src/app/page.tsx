@@ -1,6 +1,7 @@
 
 import { Metadata } from 'next'
 import Hero from '@/components/Home/Hero'
+import TelemetryPeak from '@/components/Home/TelemetryPeak'
 import Work from '@/components/Home/work'
 import TimeLine from '@/components/Home/timeline'
 import Platform from '@/components/Home/platform'
@@ -18,6 +19,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <TelemetryPeak />
       <Work />
       <GlobalReach/>
       <TimeLine />
