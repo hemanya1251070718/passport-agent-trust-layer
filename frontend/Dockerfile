@@ -2,6 +2,7 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+RUN apk add --no-cache libc6-compat
 # Enable pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
