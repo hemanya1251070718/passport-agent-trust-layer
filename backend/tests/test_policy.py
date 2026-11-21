@@ -63,3 +63,41 @@ async def test_policy_deny_malicious_parameter_ssrf():
     res = await policy.evaluate_action(req)
     assert res.decision == "DENY"
     assert "Malicious parameter pattern" in res.reason
+
+@pytest.mark.asyncio
+async def test_policy_allow_crustdata_company_enrich():
+    crypto = CryptoEngine.get_instance()
+    policy = PolicyEngine.get_instance()
+    token, _, _ = crypto.mint_token(
+        principal_id="user_01",
+        agent_id="agent_01",
+        scopes=["vendor:verify"]
+    )
+    req = ToolEvaluationRequest(
+        agent_id="agent_01",
+        delegation_token=token,
+        tool_name="crustdata_enrich_company",
+        parameters={"domain": "stripe.com"}
+    )
+    res = await policy.evaluate_action(req)
+    assert res.decision == "ALLOW"
+    assert res.execution_token is not None
+
+@pytest.mark.asyncio
+async def test_policy_deny_crustdata_people_search_compliance():
+    crypto = CryptoEngine.get_instance()
+    policy = PolicyEngine.get_instance()
+    token, _, _ = crypto.mint_token(
+        principal_id="user_01",
+        agent_id="agent_01",
+        scopes=["*"] # Even with wildcard scope!
+    )
+    req = ToolEvaluationRequest(
+        agent_id="agent_01",
+        delegation_token=token,
+        tool_name="crustdata_people_search",
+        parameters={"query": "CEO of startup"}
+    )
+    res = await policy.evaluate_action(req)
+    assert res.decision == "DENY"
+    assert "Compliance Interdiction" in res.reason
