@@ -17,6 +17,7 @@ from backend.app.models.schemas import (
     SubDelegationMintRequest,
     TokenMintResponse,
     AgentRegisterRequest,
+    AgentStatusUpdateRequest,
     AgentResponse,
     ToolEvaluationRequest,
     ToolEvaluationResponse,
@@ -268,6 +269,39 @@ async def register_agent(req: AgentRegisterRequest):
         status="ACTIVE",
         created_at=now_iso
     )
+
+@router.post("/agents/{agent_id}/status")
+async def update_agent_status(agent_id: str, req: AgentStatusUpdateRequest):
+    valid_statuses = ["ACTIVE", "SUSPENDED", "KILLED"]
+    status_upper = req.status.upper()
+    if status_upper not in valid_statuses:
+        raise HTTPException(status_code=400, detail=f"Invalid status. Must be one of: {valid_statuses}")
+    
+    with db.get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM agents WHERE agent_id = ?;", (agent_id,))
+        agent = cursor.fetchone()
+        if not agent:
+            raise HTTPException(status_code=404, detail=f"Agent '{agent_id}' not found in registry.")
+        
+        conn.execute("UPDATE agents SET status = ? WHERE agent_id = ?;", (status_upper, agent_id))
+        conn.commit()
+
+    policy.update_agent_status_cache(agent_id, status_upper)
+
+    action_name = "AGENT_KILL_SWITCH_ENGAGED" if status_upper in ["SUSPENDED", "KILLED"] else "AGENT_ACTIVATED"
+    audit.record_event(
+        agent_id=agent_id,
+        action=action_name,
+        status=status_upper,
+        details={"reason": req.reason, "target_agent": agent_id, "new_status": status_upper}
+    )
+    return {
+        "success": True,
+        "agent_id": agent_id,
+        "status": status_upper,
+        "reason": req.reason
+    }
 
 # --- POLICY EVALUATION ENGINE ---
 @router.post("/policy/evaluate", response_model=ToolEvaluationResponse)

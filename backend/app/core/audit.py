@@ -83,7 +83,9 @@ class AuditLedger:
     def __init__(self):
         self.db = Database.get_instance()
         self.broadcaster = EventBroadcaster.get_instance()
+        self._cached_tip: Optional[AuditEntry] = None
         self._init_ledger()
+        self._cached_tip = self._get_tip()
 
     @property
     def _chain(self) -> List[BlockProxy]:
@@ -153,7 +155,7 @@ class AuditLedger:
         status: str,
         details: Dict[str, Any]
     ) -> AuditEntry:
-        tip = self._get_tip()
+        tip = self._cached_tip or self._get_tip()
         now_iso = datetime.now(timezone.utc).isoformat()
         
         entry = AuditEntry(
@@ -181,6 +183,8 @@ class AuditLedger:
                 )
             )
             conn.commit()
+
+        self._cached_tip = entry
 
         # Real-time SSE Broadcast (fire & forget non-blocking)
         try:

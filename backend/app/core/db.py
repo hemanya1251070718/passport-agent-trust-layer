@@ -27,8 +27,10 @@ class Database:
     def get_connection(self) -> sqlite3.Connection:
         conn = sqlite3.connect(self.db_path, timeout=10.0)
         conn.row_factory = sqlite3.Row
-        # Enable WAL mode for high concurrency and sub-millisecond writes
+        # Enable WAL mode and NORMAL synchronous for high-concurrency sub-millisecond writes
         conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute("PRAGMA synchronous=NORMAL;")
+        conn.execute("PRAGMA busy_timeout=10000;")
         conn.execute("PRAGMA foreign_keys=ON;")
         return conn
 

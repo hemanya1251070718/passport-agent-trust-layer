@@ -51,6 +51,10 @@ class AgentRegisterRequest(BaseModel):
     single_tx_cap: float = 15.0
     allowed_scopes: List[str]
 
+class AgentStatusUpdateRequest(BaseModel):
+    status: str  # ACTIVE, SUSPENDED, KILLED
+    reason: Optional[str] = "Operator intervention"
+
 class AgentResponse(BaseModel):
     agent_id: str
     name: str
@@ -75,6 +79,8 @@ class ToolEvaluationResponse(BaseModel):
     risk_score: float
     execution_token: Optional[str] = None
     approval_id: Optional[str] = None
+    decision_latency_ms: Optional[float] = None
+    kernel_latency_ms: Optional[float] = None
 
 class SpendRequest(BaseModel):
     agent_id: str

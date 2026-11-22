@@ -4,7 +4,7 @@ import uuid
 import json
 import base64
 import logging
-from typing import Set, Tuple, Optional, List
+from typing import Set, Tuple, Optional, List, Dict
 from datetime import datetime, timezone
 from cryptography.hazmat.primitives.asymmetric import ed25519
 from cryptography.hazmat.primitives import serialization
@@ -18,7 +18,23 @@ class CryptoEngine:
 
     def __init__(self):
         self.db = Database.get_instance()
+        self._revoked_jtis: Set[str] = set()
+        self._token_parents: Dict[str, Optional[str]] = {}
         self._init_keypair()
+        self._load_delegation_cache()
+
+    def _load_delegation_cache(self):
+        try:
+            with self.db.get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT jti, parent_jti, is_revoked FROM delegations;")
+                for r in cursor.fetchall():
+                    if r["is_revoked"] == 1:
+                        self._revoked_jtis.add(r["jti"])
+                    if r["parent_jti"]:
+                        self._token_parents[r["jti"]] = r["parent_jti"]
+        except Exception:
+            pass
 
     @classmethod
     def get_instance(cls):
@@ -136,6 +152,7 @@ class CryptoEngine:
             )
             conn.commit()
 
+        self._token_parents[jti] = None
         return token_str, jti, exp
 
     def mint_sub_delegation(
@@ -218,6 +235,7 @@ class CryptoEngine:
             )
             conn.commit()
 
+        self._token_parents[jti] = parent_claims.jti
         return token_str, jti, parent_claims.jti, exp
 
     def verify_token(self, token_str: str) -> TokenClaims:
@@ -262,21 +280,21 @@ class CryptoEngine:
         return claims
 
     def _is_chain_revoked(self, jti: str) -> bool:
-        """Recursively inspects delegation chain to ensure no ancestor is revoked."""
-        with self.db.get_connection() as conn:
-            cursor = conn.cursor()
-            curr_jti = jti
-            while curr_jti:
-                cursor.execute("SELECT parent_jti, is_revoked FROM delegations WHERE jti = ?;", (curr_jti,))
-                row = cursor.fetchone()
-                if not row:
-                    break
-                if row["is_revoked"] == 1:
-                    return True
-                curr_jti = row["parent_jti"]
+        """Recursively inspects delegation chain in memory for sub-millisecond verification."""
+        curr_jti = jti
+        while curr_jti:
+            if curr_jti in self._revoked_jtis:
+                self._revoked_jtis.add(jti)
+                return True
+            curr_jti = self._token_parents.get(curr_jti)
         return False
 
     def revoke_token(self, jti: str, reason: str = "Revoked by principal") -> bool:
+        self._revoked_jtis.add(jti)
+        # Cascade revocation to in-memory child delegation tree
+        for child_jti, p_jti in list(self._token_parents.items()):
+            if p_jti == jti:
+                self._revoked_jtis.add(child_jti)
         with self.db.get_connection() as conn:
             conn.execute(
                 "UPDATE delegations SET is_revoked = 1, revoked_reason = ? WHERE jti = ?;",
